@@ -1,6 +1,8 @@
 const express=require("express")
 const cors=require("cors")
 const { PrismaClient } = require('@prisma/client')
+//const ServerlessHttp=require("serverless-http")
+const { Server } = require("http")
 
 const PORT=3000
 const app=express();
@@ -8,7 +10,14 @@ app.use(cors());
 app.use(express.json());
 const prisma=new PrismaClient();
 
-app.post("/createTodos",async (req,res)=>{
+app.get("/api/hello",(req,res)=>{
+    res.status(200).json({
+        message:"Hello"
+    })
+})
+
+
+app.post("/api/createTodos",async (req,res)=>{
     const body=req.body
     try{
         const response=await prisma.todos.create(
@@ -38,7 +47,7 @@ app.post("/createTodos",async (req,res)=>{
     }
 })
 
-app.get("/getTodos",async(req,res)=>{
+app.get("/api/getTodos",async(req,res)=>{
     try{
         const response=await prisma.todos.findMany()
         if(!response){
@@ -58,7 +67,7 @@ app.get("/getTodos",async(req,res)=>{
     }
 })
 
-app.post("/complete",async (req,res)=>{
+app.post("/api/complete",async (req,res)=>{
     const body=req.body;
     try{
         const response=await prisma.todos.update({
@@ -84,7 +93,7 @@ app.post("/complete",async (req,res)=>{
      }
 })
 
-app.delete("/deleteTodos",async (req,res)=>{
+app.delete("/api/deleteTodos",async (req,res)=>{
     const body=req.body;
     console.log(body)
     try{
@@ -110,3 +119,4 @@ app.delete("/deleteTodos",async (req,res)=>{
 })
 
 app.listen(PORT)
+
