@@ -41,7 +41,7 @@ app.post("/createTodos",async (req,res)=>{
         }
         console.log(response)
         res.status(200).json({
-            message:response
+            message:"Todo created"
         })
     }catch(e){
         console.log(e)
